@@ -65,7 +65,7 @@ async def cancel(update: Update, context: CallbackContext):
 
 # Main function to run the bot
 def main():
-    bot_token = "YOUR_BOT_TOKEN"
+    bot_token = "7625370821:AAEUgkhMJKkKpIrWKFtwG3pBRxgnyCP_VhU"
     application = Application.builder().token(bot_token).build()
 
     # Conversation handler for adding links
