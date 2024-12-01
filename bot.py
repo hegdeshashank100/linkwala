@@ -11,7 +11,7 @@ app = Flask(__name__)
 # GitHub Details (use environment variables for security)
 GITHUB_REPO = os.getenv('GITHUB_REPO', 'hegdeshashank100/linkwala')  # Replace with your GitHub repo
 GITHUB_FILE_PATH = os.getenv('GITHUB_FILE_PATH', 'links.json')  # Path to the file in the repo
-GITHUB_TOKEN = os.getenv('GITHUB_TOKEN', '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')  # Your GitHub personal access token
+GITHUB_TOKEN = os.getenv('GITHUB_TOKEN', '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')  # Your GitHub personal access token
 
 # Telegram Bot Details (use environment variable for token)
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '7625370821:AAEUgkhMJKkKpIrWKFtwG3pBRxgnyCP_VhU')  # Replace with your bot's token
