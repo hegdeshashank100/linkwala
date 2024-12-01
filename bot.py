@@ -1,19 +1,23 @@
 import json
+import os
 import requests
-from flask import Flask, request
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, CallbackContext, ConversationHandler
+from flask import Flask, request
 
-# GitHub Details
-GITHUB_REPO = 'hegdeshashank100/linkwala'
-GITHUB_FILE_PATH = 'links.json'
-GITHUB_TOKEN = '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'  # Replace with your GitHub personal access token
+# Flask Setup
+app = Flask(__name__)
+
+# GitHub Details (use environment variables for security)
+GITHUB_REPO = os.getenv('GITHUB_REPO', 'hegdeshashank100/linkwala')  # Replace with your GitHub repo
+GITHUB_FILE_PATH = os.getenv('GITHUB_FILE_PATH', 'links.json')  # Path to the file in the repo
+GITHUB_TOKEN = os.getenv('GITHUB_TOKEN', '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')  # Your GitHub personal access token
+
+# Telegram Bot Details (use environment variable for token)
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '7625370821:AAEUgkhMJKkKpIrWKFtwG3pBRxgnyCP_VhU')  # Replace with your bot's token
 
 # JSON file to store links (locally and remotely)
 JSON_FILE = "links.json"
-
-# Flask app
-app = Flask(__name__)
 
 # Load links from GitHub
 def load_links_from_github():
@@ -109,22 +113,21 @@ async def cancel(update: Update, context: CallbackContext):
     await update.message.reply_text("Link addition canceled.")
     return ConversationHandler.END
 
-# Webhook route for Telegram updates
-@app.route(f"/{bot_token}", methods=["POST"])
+# Flask route for Webhook
+@app.route(f'/{TELEGRAM_BOT_TOKEN}', methods=['POST'])
 def webhook():
     json_str = request.get_data().decode('UTF-8')
-    update = Update.de_json(json.loads(json_str), bot)
+    update = Update.de_json(json.loads(json_str), application.bot)
     application.process_update(update)
-    return 'OK', 200
+    return 'OK'
 
 # Main function to run the bot
-if __name__ == "__main__":
-    bot_token = "7625370821:AAEUgkhMJKkKpIrWKFtwG3pBRxgnyCP_VhU"  # Replace with your bot's token
-    application = Application.builder().token(bot_token).build()
-
+def main():
     # Load existing links
     global links
     links = load_links()
+
+    application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
 
     # Conversation handler for adding links
     add_handler = ConversationHandler(
@@ -141,5 +144,9 @@ if __name__ == "__main__":
     application.add_handler(add_handler)
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
-    # Run webhook
-    app.run(host="0.0.0.0", port=5000)  # Use a suitable port for the server
+    # Start the bot (Webhook)
+    application.run_polling()
+
+if __name__ == "__main__":
+    main()
+    app.run(host='0.0.0.0', port=8080)
