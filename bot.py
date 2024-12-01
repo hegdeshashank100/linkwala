@@ -140,7 +140,8 @@ website_links = {
     "tmz": "https://www.tmz.com",
     "people": "https://www.people.com",
     "gq": "https://www.gq.com",
-    "vogue": "https://www.vogue.com"
+    "vogue": "https://www.vogue.com",
+    "What's app":"https://web.whatsapp.com/"
 }
 
 
