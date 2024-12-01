@@ -145,7 +145,7 @@ website_links = {
     "jiocinema": "https://www.jiocinema.com",
     "myntra": "https://www.myntra.com",
     "swiggy": "https://www.swiggy.com",
-    "hotstar":"https://www.hotstar.com/in/home"
+    "hotstar":"https://www.hotstar.com/in/home",
     "whatsapp": "https://web.whatsapp.com"
 }
 
