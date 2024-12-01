@@ -14,7 +14,7 @@ GITHUB_FILE_PATH = os.getenv('GITHUB_FILE_PATH', 'links.json')  # Path to the fi
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN', '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')  # Your GitHub personal access token
 
 # Telegram Bot Details (use environment variable for token)
-TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '7625370821:AAEUgkhMJKkKpIrWKFtwG3pBRxgnyCP_VhU')  # Replace with your bot's token
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '7625370821:AAFvb_Yx5DF3v2U7KIF1ayM-Kn6-LfOkRMQ')  # Replace with your bot's token
 
 # JSON file to store links (locally and remotely)
 JSON_FILE = "links.json"
