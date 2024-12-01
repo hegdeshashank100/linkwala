@@ -1,1 +1,3 @@
 python-telegram-bot==20.1
+Flask==2.3.2  # Ensure you have Flask as a dependency if you're using Flask for webhooks
+requests==2.31.0  # Ensure you have requests to handle HTTP requests for GitHub API calls
