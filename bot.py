@@ -1,25 +1,67 @@
 import json
+import requests
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, CallbackContext, ConversationHandler
 
-# JSON file to store links
+# GitHub Details
+GITHUB_REPO = 'hegdeshashank100/linkwala'
+GITHUB_FILE_PATH = 'links.json'
+GITHUB_TOKEN = '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'  # Replace with your GitHub personal access token
+
+# JSON file to store links (locally and remotely)
 JSON_FILE = "links.json"
 
-# Load links from JSON file
-def load_links():
-    try:
-        with open(JSON_FILE, "r") as file:
-            return json.load(file)
-    except (FileNotFoundError, json.JSONDecodeError):
-        return {}
+# Load links from GitHub
+def load_links_from_github():
+    url = f'https://api.github.com/repos/{GITHUB_REPO}/contents/{GITHUB_FILE_PATH}'
+    headers = {'Authorization': f'token {GITHUB_TOKEN}'}
+    response = requests.get(url, headers=headers)
 
-# Save links to JSON file
+    if response.status_code == 200:
+        file_content = response.json()['content']
+        return json.loads(requests.utils.base64.b64decode(file_content).decode())
+    return {}
+
+# Save links to GitHub
+def save_links_to_github(links):
+    url = f'https://api.github.com/repos/{GITHUB_REPO}/contents/{GITHUB_FILE_PATH}'
+    headers = {'Authorization': f'token {GITHUB_TOKEN}'}
+
+    # Fetch the file info to get the sha for updating
+    file_info_response = requests.get(url, headers=headers)
+    if file_info_response.status_code == 200:
+        sha = file_info_response.json()['sha']
+        
+        data = {
+            'message': 'Update links.json with new link',
+            'content': requests.utils.base64.b64encode(json.dumps(links).encode()).decode(),
+            'sha': sha
+        }
+        
+        response = requests.put(url, headers=headers, json=data)
+        if response.status_code == 200:
+            print("Successfully updated links.json on GitHub.")
+        else:
+            print("Failed to update links.json on GitHub:", response.text)
+    else:
+        print("Failed to fetch file info from GitHub.")
+
+# Load links from local JSON file or GitHub
+def load_links():
+    links = load_links_from_github()  # Load from GitHub
+    if not links:
+        try:
+            with open(JSON_FILE, "r") as file:
+                return json.load(file)
+        except (FileNotFoundError, json.JSONDecodeError):
+            return {}
+    return links
+
+# Save links to the local JSON file
 def save_links(links):
     with open(JSON_FILE, "w") as file:
         json.dump(links, file, indent=4)
-
-# Load existing links
-links = load_links()
+    save_links_to_github(links)  # Also update GitHub
 
 # States for conversation
 ENTER_NAME, ENTER_LINK = range(2)
@@ -53,7 +95,7 @@ async def enter_link(update: Update, context: CallbackContext):
     website_name = context.user_data["website_name"]
     website_link = update.message.text
     links[website_name] = website_link  # Add to the dictionary
-    save_links(links)  # Save to the JSON file
+    save_links(links)  # Save to both the local file and GitHub
 
     await update.message.reply_text(f"Website '{website_name}' has been added with the link: {website_link}")
     return ConversationHandler.END
@@ -65,8 +107,12 @@ async def cancel(update: Update, context: CallbackContext):
 
 # Main function to run the bot
 def main():
-    bot_token = "7625370821:AAEUgkhMJKkKpIrWKFtwG3pBRxgnyCP_VhU"
+    bot_token = "your-telegram-bot-token"  # Replace with your bot's token
     application = Application.builder().token(bot_token).build()
+
+    # Load existing links
+    global links
+    links = load_links()
 
     # Conversation handler for adding links
     add_handler = ConversationHandler(
@@ -88,4 +134,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    app.run(host='0.0.0.0', port=8080)
