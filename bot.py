@@ -141,6 +141,10 @@ website_links = {
     "people": "https://www.people.com",
     "gq": "https://www.gq.com",
     "vogue": "https://www.vogue.com",
+    "zomato": "https://www.zomato.com",
+    "jiocinema": "https://www.jiocinema.com",
+    "myntra": "https://www.myntra.com",
+    "swiggy": "https://www.swiggy.com",
     "whatsapp": "https://web.whatsapp.com"
 }
 
