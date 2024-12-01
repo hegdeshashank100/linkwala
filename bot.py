@@ -110,7 +110,7 @@ async def cancel(update: Update, context: CallbackContext):
     return ConversationHandler.END
 
 # Webhook route for Telegram updates
-@app.route(f"/{your-telegram-bot-token}", methods=["POST"])
+@app.route(f"/{7625370821:AAEUgkhMJKkKpIrWKFtwG3pBRxgnyCP_VhU}", methods=["POST"])
 def webhook():
     json_str = request.get_data().decode('UTF-8')
     update = Update.de_json(json.loads(json_str), bot)
