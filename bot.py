@@ -158,7 +158,7 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
 
 # Function to handle the /start command
 async def start(update: Update, context: CallbackContext) -> None:
-    await update.message.reply_text("Hello! Send me a website name, and I'll provide you with the link.")
+    await update.message.reply_text("Hello! Send me a website name(In Lower Case without Space), and I'll provide you with the link.")
 
 # Main function to start the bot
 def main():
