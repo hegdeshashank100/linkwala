@@ -141,7 +141,7 @@ website_links = {
     "people": "https://www.people.com",
     "gq": "https://www.gq.com",
     "vogue": "https://www.vogue.com",
-    "What's app":"https://web.whatsapp.com/"
+    "What's app":"https://web.whatsapp.com"
 }
 
 
